@@ -1,4 +1,4 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 export class BaseEntity {
   @Expose()
@@ -10,7 +10,8 @@ export class BaseEntity {
   id: number;
 
   @Expose()
-  created: string;
+  @Type(() => Date)
+  created: Date;
 
   @Expose()
   edited: string;

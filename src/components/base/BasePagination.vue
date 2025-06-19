@@ -1,0 +1,64 @@
+<script setup lang="ts">
+defineProps<{
+  totalPages: number;
+}>();
+
+const page = defineModel({ type: Number, required: true });
+</script>
+
+<template>
+  <nav class="pagination">
+    <button class="pagination__button" :disabled="page == 1" @click="page -= 1">◀</button>
+    <span class="pagination__label">
+      <span>
+        {{ page }}
+      </span>
+      /
+      <span>
+        {{ totalPages }}
+      </span>
+    </span>
+    <button class="pagination__button" :disabled="page >= totalPages" @click="page += 1">▶</button>
+  </nav>
+</template>
+
+<style scoped lang="scss">
+@use '@styles/queries';
+@use '@styles/colors';
+@use 'sass:color';
+
+.pagination {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0 0 0;
+
+  &__button {
+    background: colors.$primary;
+    color: colors.$white;
+    border: none;
+    border-radius: 0.4rem;
+    font-size: 1.3rem;
+    padding: 0.23rem 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      background: color.scale(colors.$primary, $lightness: -10%);
+    }
+  }
+
+  &__label {
+    font-family: 'Orbitron', sans-serif;
+    color: colors.$primary;
+    font-size: 1.08rem;
+    font-weight: 500;
+  }
+}
+</style>

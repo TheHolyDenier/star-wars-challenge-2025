@@ -19,18 +19,18 @@
 @use 'sass:color';
 
 .layout {
-  width: 100vw;
+  max-width: 100vw;
   min-height: 100vh;
   background-color: colors.$background;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 
   &__header {
     padding: 1.5rem 2rem;
-    border-bottom: 1px solid colors.$yellow;
-    width: 100%;
+    border-bottom: 1px solid colors.$primary;
     height: 100px;
     display: flex;
     flex-direction: column;
@@ -41,13 +41,13 @@
   &__link {
     display: block;
     text-decoration: none;
-    color: colors.$title;
+    color: colors.$primary;
     font-size: 2rem;
     text-align: center;
     width: auto;
 
     &:hover {
-      color: color.scale(colors.$yellow, $lightness: -5%);
+      color: color.scale(colors.$primary, $lightness: -5%);
     }
   }
 
@@ -58,16 +58,9 @@
   &__content {
     flex-grow: 1;
     color: colors.$primary-text;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    overflow-y: auto;
-    width: 100%;
-    height: 100%;
-
-    @include queries.tablet {
-      padding: 2rem;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     @include queries.desktop {
       max-width: 80vw;

@@ -8,5 +8,3 @@ import TheLayout from '@/components/unique/TheLayout.vue';
     <RouterView />
   </TheLayout>
 </template>
-
-<style scoped></style>
