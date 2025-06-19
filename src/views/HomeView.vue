@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const bannerData = [
-  { label: 'PLANETS', url: 'planets', image: 'planets' },
-  { label: 'PEOPLE', url: 'people', image: 'people' },
+  { label: 'planets', url: 'planets', image: 'planets' },
+  { label: 'people', url: 'people', image: 'people' },
 ];
 </script>
 
@@ -11,7 +11,7 @@ const bannerData = [
       v-for="item of bannerData"
       :key="item.url"
       :to="{ name: item.url }"
-      aria-label="Go to planets"
+      :aria-label="`Go to ${item.label}`"
       class="home__link"
     >
       <div
@@ -32,7 +32,7 @@ const bannerData = [
 
 .home {
   width: 100vw;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 150px);
   flex-grow: 1;
   display: grid;
   grid-template-columns: 1fr;
@@ -43,7 +43,7 @@ const bannerData = [
 
   @include queries.tablet {
     width: calc(100vw - 4rem);
-    height: calc(100vh - 100px - 4rem);
+    height: calc(100vh - 150px - 4rem);
   }
 
   @include queries.desktop {
@@ -93,7 +93,7 @@ const bannerData = [
     right: 0;
     width: 100%;
     transform: translateY(-50%);
-    color: colors.$primary-text;
+    color: colors.$white;
     font-size: 1.5rem;
     background-color: rgba(0, 0, 0, 0.5);
     padding-inline: 2rem;

@@ -9,6 +9,7 @@ import { useTable } from '@/shared/table';
 import { useRoute, useRouter } from 'vue-router';
 import { useRouteQuery } from '@vueuse/router';
 import type { Order } from '@/types/Order';
+import BaseTableSortButton from '@/components/base/BaseTableSortButton.vue';
 
 const { paginate, getTotalPages, filter, sortData } = useTable();
 const router = useRouter();
@@ -64,18 +65,15 @@ watch(search, () => (page.value = 1));
   <table class="table">
     <thead>
       <tr class="table__line table__line--titles">
-        <th
-          v-for="column of columns"
-          :key="column.name"
-          class="table__title"
-          :class="{ 'table__title--sortable': sortBy.includes(column.name) }"
-          @click="toggleSort(column)"
-        >
-          {{ column.label }}
-          <span v-if="sort === column.name">
-            {{ order === 'asc' ? '▲' : '▼' }}
-          </span>
-          <span v-else-if="sortBy.includes(column.name)">⇅</span>
+        <th v-for="column of columns" :key="column.name" class="table__title">
+          <BaseTableSortButton
+            v-if="sortBy.includes(column.name)"
+            v-model:order="order"
+            v-model:page="page"
+            v-model:sort="sort"
+            :column="column"
+          />
+          <span v-else>{{ column.label }}</span>
         </th>
       </tr>
     </thead>
@@ -157,10 +155,6 @@ watch(search, () => (page.value = 1));
 
   &__title {
     padding: 1rem;
-
-    &--sortable {
-      cursor: pointer;
-    }
   }
 
   @media (hover: none) and (pointer: coarse) {
