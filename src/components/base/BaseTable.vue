@@ -1,26 +1,52 @@
 <script setup lang="ts" generic="T extends BaseEntity">
-import { computed, ref, shallowRef } from 'vue';
+import { computed, shallowRef } from 'vue';
 import type { Column } from '@/interfaces/InputDefinition.ts';
 import BaseTableCell from '@/components/base/BaseTableCell.vue';
 import type { BaseEntity } from '@/features/BaseEntity.ts';
 import BasePagination from '@/components/base/BasePagination.vue';
+import BaseTableSearch from '@/components/base/BaseTableSearch.vue';
+import { useTable } from '@/shared/table';
+import { useRoute, useRouter } from 'vue-router';
 
-const DISPLAY_PER_PAGE = 10;
+const { paginate, getTotalPages, filter } = useTable();
+const router = useRouter();
+const route = useRoute();
 
-const props = defineProps<{
-  columns: Column<T>[];
-  dataLoader: () => Promise<T[]>;
-}>();
+const props = withDefaults(
+  defineProps<{
+    columns: Column<T>[];
+    dataLoader: () => Promise<T[]>;
+    searchBy?: string[];
+  }>(),
+  { searchBy: () => ['name'] },
+);
 
 const data = shallowRef<T[]>([]);
-const page = ref<number>(1);
-
-const paginatedData = computed<T[]>(() => {
-  const start = (page.value - 1) * DISPLAY_PER_PAGE;
-  const end = start + DISPLAY_PER_PAGE;
-  return data.value.slice(start, end);
+const page = computed({
+  get: () => Number(route.query.page || 1),
+  set: (value: number) => {
+    router.replace({
+      query: {
+        ...route.query,
+        page: value || undefined,
+      },
+    });
+  },
 });
-const totalPages = computed(() => Math.max(1, Math.ceil(data.value.length / DISPLAY_PER_PAGE)));
+const search = computed({
+  get: () => (route.query.search ? String(route.query.search) : ''),
+  set: (value: string) => {
+    router.replace({
+      query: {
+        search: value || undefined,
+      },
+    });
+  },
+});
+
+const filteredData = computed(() => filter(data.value, search.value, props.searchBy));
+const paginatedData = computed(() => paginate(filteredData.value, page.value));
+const totalPages = computed(() => getTotalPages(filteredData.value));
 
 const loadData = async () => {
   data.value = await props.dataLoader();
@@ -30,6 +56,7 @@ loadData();
 </script>
 
 <template>
+  <BaseTableSearch v-model="search" />
   <table class="table">
     <thead>
       <tr class="table__line table__line--titles">
@@ -39,7 +66,7 @@ loadData();
       </tr>
     </thead>
     <tbody>
-      <div v-if="!data.length" class="table__no-results">No results found.</div>
+      <div v-if="!paginatedData.length" class="table__no-results">No results found.</div>
       <tr class="table__line" v-for="row in paginatedData" :key="row.id">
         <BaseTableCell
           v-for="column in props.columns"
