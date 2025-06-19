@@ -1,29 +1,45 @@
 import { BaseEntity } from '@/features/BaseEntity.ts';
+import { Expose, Transform } from 'class-transformer';
 
 export class Person extends BaseEntity {
+  @Expose()
   name: string;
 
+  @Transform(({ value }) => (value ? Number(value) / 100.0 : null))
+  @Expose()
   height: number;
 
-  mass: string;
+  @Transform(({ value }) => (value ? Number(value) : null))
+  @Expose()
+  mass: number;
 
-  //hair_color
+  @Expose({ name: 'hair_color' })
   hair: string;
 
-  //'skin_color'
+  @Expose({ name: 'skin_color' })
   skin: string;
 
-  //'eye_color'
+  @Expose({ name: 'eye_color' })
   eye: string;
 
-  //'birth_year'
+  @Expose({ name: 'birth_year' })
   birthYear: number;
 
+  @Expose()
   gender: string;
+
+  @Expose()
   homeworld: string;
 
+  @Expose()
   films: string[];
+
+  @Expose()
   species: string[];
+
+  @Expose()
   vehicles: string[];
+
+  @Expose()
   starships: string[];
 }

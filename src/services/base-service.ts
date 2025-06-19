@@ -1,14 +1,20 @@
-import type { Person } from '@/features/Person.ts';
+import { BaseEntity } from '@/features/BaseEntity';
+import { plainToInstance } from 'class-transformer';
 
-export const useBaseService = (path: string) => {
+export const useBaseService = <T extends BaseEntity>(path: string, instance: new () => T) => {
   const URL = ` https://swapi.info/api/${path}`;
 
-  const findAll = async (): Promise<Person[]> => {
+  const findAll = async (): Promise<T[]> => {
     const result = await fetch(URL);
-    return result.json();
+    const data = result.json();
+    return plainToInstance(instance, data);
   };
 
-  const findById = async () => {};
+  const findById = async (id: number): Promise<T> => {
+    const result = await fetch(`${URL}/${id}`);
+    const data = result.json();
+    return plainToInstance(instance, data);
+  };
 
   return { findAll, findById };
 };

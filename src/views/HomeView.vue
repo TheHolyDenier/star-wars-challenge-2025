@@ -2,7 +2,7 @@
 const bannerData = [
   { label: 'PLANETS', url: 'planets', image: 'planets' },
   { label: 'PEOPLE', url: 'people', image: 'people' },
-]
+];
 </script>
 
 <template>
