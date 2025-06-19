@@ -28,6 +28,10 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
 h1 {
   font-family: 'StarJedi', sans-serif;
 }
@@ -38,11 +42,9 @@ h2, h3, h4, h5, h6 {
 
 p {
   text-wrap: pretty;
+  font-family: 'Roboto', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  text-wrap: balance;
-}
 
 #root, #__next {
   isolation: isolate;

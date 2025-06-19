@@ -6,19 +6,19 @@ const bannerData = [
 </script>
 
 <template>
-  <nav class="navigation" aria-label="Navigation options">
+  <nav class="home" aria-label="Navigation options">
     <RouterLink
       v-for="item of bannerData"
       :key="item.url"
       :to="{ name: item.url }"
       aria-label="Go to planets"
-      class="navigation__link"
+      class="home__link"
     >
       <div
-        class="navigation__banner"
+        class="home__banner"
         :style="{ backgroundImage: `url(src/assets/images/${item.image}.webp)` }"
       >
-        <div class="navigation__title">
+        <div class="home__title">
           <h2>{{ item.label }}</h2>
         </div>
       </div>
@@ -30,7 +30,7 @@ const bannerData = [
 @use '@styles/queries';
 @use '@styles/colors';
 
-.navigation {
+.home {
   width: 100vw;
   height: calc(100vh - 100px);
   flex-grow: 1;
