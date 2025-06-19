@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends BaseEntity">
-import { computed, shallowRef } from 'vue';
+import { computed, shallowRef, watch } from 'vue';
 import type { Column } from '@/interfaces/InputDefinition.ts';
 import BaseTableCell from '@/components/base/BaseTableCell.vue';
 import type { BaseEntity } from '@/features/BaseEntity.ts';
@@ -7,8 +7,10 @@ import BasePagination from '@/components/base/BasePagination.vue';
 import BaseTableSearch from '@/components/base/BaseTableSearch.vue';
 import { useTable } from '@/shared/table';
 import { useRoute, useRouter } from 'vue-router';
+import { useRouteQuery } from '@vueuse/router';
+import type { Order } from '@/types/Order';
 
-const { paginate, getTotalPages, filter } = useTable();
+const { paginate, getTotalPages, filter, sortData } = useTable();
 const router = useRouter();
 const route = useRoute();
 
@@ -17,42 +19,44 @@ const props = withDefaults(
     columns: Column<T>[];
     dataLoader: () => Promise<T[]>;
     searchBy?: string[];
+    sortBy?: string[];
+    defaultSort?: string;
   }>(),
-  { searchBy: () => ['name'] },
+  { searchBy: () => ['name'], sortBy: () => ['name', 'created'], defaultSort: 'name' },
 );
 
 const data = shallowRef<T[]>([]);
-const page = computed({
-  get: () => Number(route.query.page || 1),
-  set: (value: number) => {
-    router.replace({
-      query: {
-        ...route.query,
-        page: value || undefined,
-      },
-    });
-  },
-});
-const search = computed({
-  get: () => (route.query.search ? String(route.query.search) : ''),
-  set: (value: string) => {
-    router.replace({
-      query: {
-        search: value || undefined,
-      },
-    });
-  },
-});
+const page = useRouteQuery('page', 1, { router, route });
+const search = useRouteQuery('search', '', { router, route });
+const sort = useRouteQuery('sort', props.defaultSort, { router, route });
+const order = useRouteQuery<Order>('order', 'asc', { router, route });
 
 const filteredData = computed(() => filter(data.value, search.value, props.searchBy));
-const paginatedData = computed(() => paginate(filteredData.value, page.value));
+const paginatedData = computed<T[]>(
+  () => paginate(sortData(filteredData.value, sort.value, order.value), page.value) as T[],
+);
 const totalPages = computed(() => getTotalPages(filteredData.value));
 
 const loadData = async () => {
   data.value = await props.dataLoader();
 };
 
+const toggleSort = (column: Column<T>) => {
+  if (!props.sortBy.includes(column.name)) return;
+
+  if (sort.value === column.name) {
+    order.value = order.value === 'asc' ? 'desc' : 'asc';
+    page.value = 1;
+    return;
+  }
+  sort.value = column.name;
+  order.value = 'asc';
+  page.value = 1;
+};
+
 loadData();
+
+watch(search, () => (page.value = 1));
 </script>
 
 <template>
@@ -60,8 +64,18 @@ loadData();
   <table class="table">
     <thead>
       <tr class="table__line table__line--titles">
-        <th v-for="col in props.columns" :key="col.name" class="table__title">
-          {{ col.label }}
+        <th
+          v-for="column of columns"
+          :key="column.name"
+          class="table__title"
+          :class="{ 'table__title--sortable': sortBy.includes(column.name) }"
+          @click="toggleSort(column)"
+        >
+          {{ column.label }}
+          <span v-if="sort === column.name">
+            {{ order === 'asc' ? '▲' : '▼' }}
+          </span>
+          <span v-else-if="sortBy.includes(column.name)">⇅</span>
         </th>
       </tr>
     </thead>
@@ -137,11 +151,15 @@ loadData();
         font-size: 0.8rem;
         background: colors.$black;
         padding: 1rem;
-
-        .table__title {
-          padding: 1rem;
-        }
       }
+    }
+  }
+
+  &__title {
+    padding: 1rem;
+
+    &--sortable {
+      cursor: pointer;
     }
   }
 

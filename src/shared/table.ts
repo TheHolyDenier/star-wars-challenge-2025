@@ -1,4 +1,5 @@
-import { get } from 'lodash';
+import { get, orderBy } from 'lodash';
+import { Order } from '@/types/Order';
 
 export const useTable = <T>(displayPerPage = 10) => {
   const paginate = (data: T[], page: number): T[] => {
@@ -21,5 +22,8 @@ export const useTable = <T>(displayPerPage = 10) => {
       ),
     );
   };
-  return { paginate, getTotalPages, filter };
+
+  const sortData = (data: T[], key: string, order: Order): T[] => orderBy(data, [key], [order]);
+
+  return { paginate, getTotalPages, filter, sortData };
 };
