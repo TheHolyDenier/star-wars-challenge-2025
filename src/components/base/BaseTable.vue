@@ -26,7 +26,7 @@ const props = withDefaults(
 );
 
 const data = shallowRef<T[]>([]);
-const page = useRouteQuery('page', 1, { router, route });
+const page = useRouteQuery<number>('page', 1, { router, route });
 const search = useRouteQuery('search', '', { router, route });
 const sort = useRouteQuery('sort', props.defaultSort, { router, route });
 const order = useRouteQuery<Order>('order', 'asc', { router, route });

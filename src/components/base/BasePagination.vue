@@ -1,14 +1,26 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   totalPages: number;
 }>();
 
 const page = defineModel({ type: Number, required: true });
+
+const goForward = () => {
+  if (page.value < props.totalPages) {
+    page.value = Number(page.value) + 1;
+  }
+};
+
+const goBackwards = () => {
+  if (page.value > 1) {
+    page.value = Number(page.value) - 1;
+  }
+};
 </script>
 
 <template>
   <nav class="pagination">
-    <button class="pagination__button" :disabled="page == 1" @click="page -= 1">◀</button>
+    <button class="pagination__button" :disabled="page == 1" @click="goBackwards">◀</button>
     <span class="pagination__label">
       <span>
         {{ page }}
@@ -18,7 +30,7 @@ const page = defineModel({ type: Number, required: true });
         {{ totalPages }}
       </span>
     </span>
-    <button class="pagination__button" :disabled="page >= totalPages" @click="page += 1">▶</button>
+    <button class="pagination__button" :disabled="page >= totalPages" @click="goForward">▶</button>
   </nav>
 </template>
 

@@ -50,6 +50,7 @@ const bannerData = [
     width: calc(80vw - 4rem);
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
+    padding-block: 2rem;
   }
 
   &__link {
