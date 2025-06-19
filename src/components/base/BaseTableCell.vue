@@ -17,7 +17,7 @@ const value = computed(() =>
   <td class="table-cell" :data-label="column.label">
     <component v-if="column.createCell" :is="column.createCell(row)" />
     <template v-else>
-      {{ value ?? '--' }}
+      {{ value }}
     </template>
   </td>
 </template>
