@@ -14,11 +14,8 @@ const value = computed(() =>
 </script>
 
 <template>
-  <td class="table-cell" :data-label="column.label">
-    <component v-if="column.createCell" :is="column.createCell(row)" />
-    <template v-else>
-      {{ value ?? '--' }}
-    </template>
+  <td class="table-cell" :data-label="column.label" :aria-label="value ?? 'No data'">
+    {{ value ?? '--' }}
   </td>
 </template>
 

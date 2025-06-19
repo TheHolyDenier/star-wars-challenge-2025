@@ -2,6 +2,9 @@ import { Expose, Transform, Type } from 'class-transformer';
 
 export class BaseEntity {
   @Expose()
+  name?: string;
+
+  @Expose()
   @Transform(({ obj }) => {
     const url = obj.url;
     const match = url.match(/\/(\d+)\/?$/);
@@ -14,7 +17,8 @@ export class BaseEntity {
   created: Date;
 
   @Expose()
-  edited: string;
+  @Type(() => Date)
+  edited: Date;
 
   @Expose()
   url: string;

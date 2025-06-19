@@ -30,7 +30,7 @@ const toggleSort = (column: Column<T>) => {
     type="button"
     @click="toggleSort(column)"
     :aria-pressed="sort === column.name ? 'true' : 'false'"
-    :aria-label="`Sort by ${column.label} in ${order === 'asc' ? 'ascending' : 'descending'} order`"
+    :aria-label="`Sorted by ${column.label} in ${order === 'asc' ? 'ascending' : 'descending'} order`"
     tabindex="0"
   >
     {{ column.label }}

@@ -20,8 +20,15 @@ const goBackwards = () => {
 
 <template>
   <nav class="pagination">
-    <button class="pagination__button" :disabled="page == 1" @click="goBackwards">◀</button>
-    <span class="pagination__label">
+    <button
+      :disabled="page == 1"
+      aria-label="Go backwards"
+      class="pagination__button"
+      @click="goBackwards"
+    >
+      ◀
+    </button>
+    <span class="pagination__label" :aria-label="`Page ${page} of ${totalPages}`">
       <span>
         {{ page }}
       </span>
@@ -30,7 +37,14 @@ const goBackwards = () => {
         {{ totalPages }}
       </span>
     </span>
-    <button class="pagination__button" :disabled="page >= totalPages" @click="goForward">▶</button>
+    <button
+      aria-label="Go forward"
+      class="pagination__button"
+      :disabled="page >= totalPages"
+      @click="goForward"
+    >
+      ▶
+    </button>
   </nav>
 </template>
 

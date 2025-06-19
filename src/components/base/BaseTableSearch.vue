@@ -4,7 +4,13 @@ const model = defineModel({ type: String, required: false });
 
 <template>
   <div class="search">
-    <input v-model="model" class="search__input" type="text" placeholder="Search" />
+    <input
+      v-model="model"
+      class="search__input"
+      type="text"
+      placeholder="Search"
+      aria-label="Search items"
+    />
   </div>
 </template>
 

@@ -3,9 +3,6 @@ import { Expose, Type } from 'class-transformer';
 
 export class Person extends BaseEntity {
   @Expose()
-  name: string;
-
-  @Expose()
   @Type(() => Number)
   height: number;
 

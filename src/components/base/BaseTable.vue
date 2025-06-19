@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends BaseEntity">
-import { computed, shallowRef, watch } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import type { Column } from '@/interfaces/InputDefinition.ts';
 import BaseTableCell from '@/components/base/BaseTableCell.vue';
 import type { BaseEntity } from '@/features/BaseEntity.ts';
@@ -10,6 +10,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useRouteQuery } from '@vueuse/router';
 import type { Order } from '@/types/Order';
 import BaseTableSortButton from '@/components/base/BaseTableSortButton.vue';
+import BaseLoading from '@/components/base/BaseLoading.vue';
 
 const { paginate, getTotalPages, filter, sortData } = useTable();
 const router = useRouter();
@@ -26,11 +27,13 @@ const props = withDefaults(
   { searchBy: () => ['name'], sortBy: () => ['name', 'created'], defaultSort: 'name' },
 );
 
-const data = shallowRef<T[]>([]);
 const page = useRouteQuery<number>('page', 1, { router, route });
 const search = useRouteQuery('search', '', { router, route });
 const sort = useRouteQuery('sort', props.defaultSort, { router, route });
 const order = useRouteQuery<Order>('order', 'asc', { router, route });
+
+const data = shallowRef<T[]>([]);
+const loading = ref(true);
 
 const filteredData = computed(() => filter(data.value, search.value, props.searchBy));
 const paginatedData = computed<T[]>(
@@ -40,19 +43,7 @@ const totalPages = computed(() => getTotalPages(filteredData.value));
 
 const loadData = async () => {
   data.value = await props.dataLoader();
-};
-
-const toggleSort = (column: Column<T>) => {
-  if (!props.sortBy.includes(column.name)) return;
-
-  if (sort.value === column.name) {
-    order.value = order.value === 'asc' ? 'desc' : 'asc';
-    page.value = 1;
-    return;
-  }
-  sort.value = column.name;
-  order.value = 'asc';
-  page.value = 1;
+  loading.value = false;
 };
 
 loadData();
@@ -62,7 +53,8 @@ watch(search, () => (page.value = 1));
 
 <template>
   <BaseTableSearch v-model="search" />
-  <table class="table">
+  <BaseLoading v-if="loading" />
+  <table v-else class="table">
     <thead>
       <tr class="table__line table__line--titles">
         <th v-for="column of columns" :key="column.name" class="table__title">
