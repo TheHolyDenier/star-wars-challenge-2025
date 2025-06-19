@@ -1,13 +1,27 @@
 <script setup lang="ts">
+const bannerData = [
+  { label: 'PLANETS', url: 'planets', image: 'planets' },
+  { label: 'PEOPLE', url: 'people', image: 'people' },
+]
 </script>
 
 <template>
   <nav class="navigation" aria-label="Navigation options">
-    <RouterLink :to="{ name: 'planets' }" aria-label="Go to planets">
-      <div class="navigation__item navigation__item--planet"></div>
-    </RouterLink>
-    <RouterLink :to="{ name: 'people' }" aria-label="Go to people">
-      <div class="navigation__item navigation__item--people"></div>
+    <RouterLink
+      v-for="item of bannerData"
+      :key="item.url"
+      :to="{ name: item.url }"
+      aria-label="Go to planets"
+      class="navigation__link"
+    >
+      <div
+        class="navigation__banner"
+        :style="{ backgroundImage: `url(src/assets/images/${item.image}.webp)` }"
+      >
+        <div class="navigation__title">
+          <h2>{{ item.label }}</h2>
+        </div>
+      </div>
     </RouterLink>
   </nav>
 </template>
@@ -17,47 +31,78 @@
 @use '@styles/colors';
 
 .navigation {
+  width: 100vw;
+  height: calc(100vh - 100px);
   flex-grow: 1;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   @include queries.tablet {
-    display: grid;
+    width: calc(100vw - 4rem);
+    height: calc(100vh - 100px - 4rem);
+  }
+
+  @include queries.desktop {
+    width: calc(80vw - 4rem);
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
   }
 
-  &__item {
-    width: auto;
+  &__link {
+    width: 100%;
     height: 100%;
-    aspect-ratio: 5/3;
+
+    &:nth-child(even) {
+      .navigation__title {
+        text-align: right;
+      }
+    }
+  }
+
+  &__banner {
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
-
-    @include queries.tablet {
-      aspect-ratio: 1;
-      width: 100%;
-      height: auto;
-    }
+    position: relative;
 
     &:hover,
     &:focus-visible {
       transform: scale(1.05);
-    }
 
-    &--people {
-      background-image: url('@assets/images/people.webp');
+      .navigation__title {
+        display: block;
+      }
     }
+  }
 
-    &--planet {
-      background-image: url('@assets/images/planets.webp');
+  &__title {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    color: colors.$primary-text;
+    font-size: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-inline: 2rem;
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: left;
+
+    @include queries.desktop {
+      font-size: 2rem;
     }
   }
 }
