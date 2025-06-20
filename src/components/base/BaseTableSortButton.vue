@@ -26,7 +26,7 @@ const toggleSort = (column: Column<T>) => {
 
 <template>
   <button
-    class="button--transparent"
+    class="sort-button button--transparent"
     type="button"
     @click="toggleSort(column)"
     :aria-pressed="sort === column.name ? 'true' : 'false'"
