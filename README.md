@@ -23,6 +23,10 @@ npm run test:unit
 
 e2e test run with Playwright. Please, make sure the server is running before initializing. 
 
+```sh
+npm run test:e2e
+```
+
 ## Technical decisions
 
 - Vue 3 + Vite, using CAPI with setup in the script tag as recommended by the official Vue docs. 
