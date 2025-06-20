@@ -4,12 +4,13 @@ export async function httpClient<T>(url: string, options?: RequestInit): Promise
   try {
     const response = await fetch(url, options);
 
-    if (response.ok) {
-      const data = await response.json();
-      return data as T;
-    }
+    console.log('API response:', response);
 
-    throw new HttpError(response.status, response.statusText || 'Unexpected error');
+    if (!response.ok) {
+      throw new HttpError(response.status, response.statusText || 'Unexpected error');
+    }
+    const data = await response.json();
+    return data as T;
   } catch (error) {
     console.error('API fetch error:', error);
 

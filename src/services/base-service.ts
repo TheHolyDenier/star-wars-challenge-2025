@@ -10,10 +10,5 @@ export const useBaseService = <T extends BaseEntity>(path: string, instance: new
     return plainToInstance(instance, data, { excludeExtraneousValues: true });
   };
 
-  const findById = async (id: number): Promise<T> => {
-    const data = httpClient<T>(`${URL}/${id}`);
-    return plainToInstance(instance, data, { excludeExtraneousValues: true });
-  };
-
-  return { findAll, findById };
+  return { findAll };
 };

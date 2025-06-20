@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePeopleService } from '@/services/people-service.ts';
+import { usePeopleService } from '@/services/people-service';
 import BaseTable from '@/components/base/BaseTable.vue';
 import { Person } from '@/features/Person';
 import type { Column } from '@/interfaces/InputDefinition';

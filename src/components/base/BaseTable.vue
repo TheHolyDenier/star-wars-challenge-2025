@@ -45,13 +45,8 @@ const sortByColumns = computed(() =>
 );
 
 const loadData = async () => {
-  try {
-    data.value = await props.dataLoader();
-  } catch {
-    console.error('Error loading data');
-  } finally {
-    loading.value = false;
-  }
+  data.value = await props.dataLoader();
+  loading.value = false;
 };
 
 loadData();

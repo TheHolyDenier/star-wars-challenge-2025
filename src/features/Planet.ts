@@ -1,5 +1,5 @@
-import { Expose, Type } from 'class-transformer';
 import { BaseEntity } from '@/features/BaseEntity';
+import { Expose, Type } from 'class-transformer';
 
 export class Planet extends BaseEntity {
   @Expose({ name: 'rotation_period' })

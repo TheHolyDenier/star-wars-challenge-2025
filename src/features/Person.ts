@@ -1,4 +1,4 @@
-import { BaseEntity } from '@/features/BaseEntity.ts';
+import { BaseEntity } from '@/features/BaseEntity';
 import { Expose, Type } from 'class-transformer';
 
 export class Person extends BaseEntity {
