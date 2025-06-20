@@ -28,6 +28,12 @@ jobs:
     - name: Run unit tests with coverage
       run: npm run test:unit -- --coverage
 
+    - name: Start dev server
+      run: npm run dev &
+
+    - name: Wait for localhost to be ready
+      run: npx wait-on http://localhost:5173
+
     - name: Install Playwright Browsers
       run: npx playwright install
 
