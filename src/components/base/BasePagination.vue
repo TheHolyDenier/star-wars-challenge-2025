@@ -23,7 +23,7 @@ const goBackwards = () => {
     <button
       :disabled="page == 1"
       aria-label="Go backwards"
-      class="pagination__button"
+      class="pagination__button button--primary"
       @click="goBackwards"
     >
       ◀
@@ -39,7 +39,7 @@ const goBackwards = () => {
     </span>
     <button
       aria-label="Go forward"
-      class="pagination__button"
+      class="pagination__button button--primary"
       :disabled="page >= totalPages"
       @click="goForward"
     >
@@ -59,26 +59,6 @@ const goBackwards = () => {
   align-items: center;
   justify-content: center;
   margin: 2rem 0 0 0;
-
-  &__button {
-    background: colors.$primary;
-    color: colors.$white;
-    border: none;
-    border-radius: 0.4rem;
-    font-size: 1.3rem;
-    padding: 0.23rem 0.95rem;
-    cursor: pointer;
-    transition: background 0.15s;
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    &:not(:disabled):hover {
-      background: color.scale(colors.$primary, $lightness: -10%);
-    }
-  }
 
   &__label {
     font-family: 'Orbitron', sans-serif;

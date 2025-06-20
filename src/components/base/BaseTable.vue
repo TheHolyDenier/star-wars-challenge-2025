@@ -40,10 +40,18 @@ const paginatedData = computed<T[]>(
   () => paginate(sortData(filteredData.value, sort.value, order.value), page.value) as T[],
 );
 const totalPages = computed(() => getTotalPages(filteredData.value));
+const sortByColumns = computed(() =>
+  props.columns.filter((column) => props.sortBy.includes(column.name)),
+);
 
 const loadData = async () => {
-  data.value = await props.dataLoader();
-  loading.value = false;
+  try {
+    data.value = await props.dataLoader();
+  } catch {
+    console.error('Error loading data');
+  } finally {
+    loading.value = false;
+  }
 };
 
 loadData();
@@ -52,42 +60,73 @@ watch(search, () => (page.value = 1));
 </script>
 
 <template>
-  <BaseTableSearch v-model="search" />
-  <BaseLoading v-if="loading" />
-  <table v-else class="table">
-    <thead>
-      <tr class="table__line table__line--titles">
-        <th v-for="column of columns" :key="column.name" class="table__title">
-          <BaseTableSortButton
-            v-if="sortBy.includes(column.name)"
-            v-model:order="order"
-            v-model:page="page"
-            v-model:sort="sort"
-            :column="column"
-          />
-          <span v-else>{{ column.label }}</span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <div v-if="!paginatedData.length" class="table__no-results">No results found.</div>
-      <tr class="table__line" v-for="row in paginatedData" :key="row.id">
-        <BaseTableCell
-          v-for="column in props.columns"
+  <div class="table-element">
+    <BaseTableSearch v-model="search" />
+    <BaseLoading v-if="loading" />
+    <div v-else>
+      <div class="table-element__mobile-sort">
+        <BaseTableSortButton
+          v-for="column of sortByColumns"
           :key="column.name"
+          v-model:order="order"
+          v-model:page="page"
+          v-model:sort="sort"
           :column="column"
-          :row="row"
         />
-      </tr>
-    </tbody>
-  </table>
-  <BasePagination v-model="page" :total-pages="totalPages" />
+      </div>
+      <table class="table">
+        <thead>
+          <tr class="table__line table__line--titles">
+            <th v-for="column of columns" :key="column.name" class="table__title">
+              <BaseTableSortButton
+                v-if="sortBy.includes(column.name)"
+                v-model:order="order"
+                v-model:page="page"
+                v-model:sort="sort"
+                :column="column"
+              />
+              <span v-else>{{ column.label }}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <div v-if="!paginatedData.length" class="table__no-results">No results found.</div>
+          <tr class="table__line" v-for="row in paginatedData" :key="row.id">
+            <BaseTableCell
+              v-for="column in props.columns"
+              :key="column.name"
+              :column="column"
+              :row="row"
+            />
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <BasePagination v-model="page" :total-pages="totalPages" />
+  </div>
 </template>
 
 <style scoped lang="scss">
 @use '@styles/queries';
 @use '@styles/colors';
 @use 'sass:color';
+
+.table-element {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__mobile-sort {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    padding: 1rem;
+    gap: 1rem;
+
+    @include queries.tablet {
+      display: none;
+    }
+  }
+}
 
 .table {
   width: 100%;

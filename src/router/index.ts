@@ -18,6 +18,16 @@ const router = createRouter({
       name: 'planets',
       component: () => import('@/views/PlanetsView.vue'),
     },
+    {
+      path: '/error/:status?',
+      name: 'error',
+      component: () => import('@/views/ErrorView.vue'),
+      props: true,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: { name: 'error', params: { status: '404', message: 'Page not found' } },
+    },
   ],
 });
 

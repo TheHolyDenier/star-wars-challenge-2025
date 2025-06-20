@@ -4,7 +4,7 @@ import type { Column } from '@/interfaces/InputDefinition.ts';
 import type { BaseEntity } from '@/features/BaseEntity.ts';
 import type { Order } from '@/types/Order';
 
-const props = defineProps<{
+defineProps<{
   column: Column<T>;
 }>();
 
@@ -26,7 +26,7 @@ const toggleSort = (column: Column<T>) => {
 
 <template>
   <button
-    class="sort-button"
+    class="button--transparent"
     type="button"
     @click="toggleSort(column)"
     :aria-pressed="sort === column.name ? 'true' : 'false'"
@@ -40,18 +40,3 @@ const toggleSort = (column: Column<T>) => {
     <span v-else>⇅</span>
   </button>
 </template>
-
-<style scoped lang="scss">
-.sort-button {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-  outline: none;
-  box-shadow: none;
-  text-transform: inherit;
-}
-</style>

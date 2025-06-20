@@ -1,5 +1,7 @@
 @use '@styles/fonts';
 @use '@styles/colors';
+@use '@styles/queries';
+@use '@styles/components/button';
 
 *, *::before, *::after {
   box-sizing: border-box;

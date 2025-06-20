@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
+import TheNotifications from '@/components/unique/TheNotifications.vue';
 
 const route = useRoute();
 
@@ -30,6 +31,8 @@ const navigationItems = [
     <main class="layout__content">
       <slot />
     </main>
+
+    <TheNotifications />
   </div>
 </template>
 
