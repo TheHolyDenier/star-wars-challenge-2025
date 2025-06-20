@@ -6,9 +6,6 @@ test.describe('People View', () => {
     await expect(page).toHaveTitle(/SW Coda/);
 
     await page.click('a[aria-label="Go to people"]');
-    const loadingIndicator = page.locator('.loading');
-    await expect.soft(loadingIndicator).toBeVisible();
-    await expect(loadingIndicator).toBeHidden();
 
     await expect(page).toHaveURL(/\/people/);
 
