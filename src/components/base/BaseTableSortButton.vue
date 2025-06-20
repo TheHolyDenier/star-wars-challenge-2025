@@ -1,7 +1,6 @@
-<script setup lang="ts" generic="T extends BaseEntity">
+<script setup lang="ts" generic="T">
 import { type PropType } from 'vue';
 import type { Column } from '@/interfaces/InputDefinition.ts';
-import type { BaseEntity } from '@/features/BaseEntity.ts';
 import type { Order } from '@/types/Order';
 
 defineProps<{

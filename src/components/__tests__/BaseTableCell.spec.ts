@@ -2,15 +2,15 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import BaseTableCell from '@/components/base/BaseTableCell.vue';
 import type { Column } from '@/interfaces/InputDefinition';
-import { BaseEntity } from '@/features/BaseEntity';
+import { get } from 'lodash';
 
 describe('BaseTableCell', () => {
   const ROW = { name: 'Luke Skywalker', id: 1, created: new Date(), edited: new Date(), url: '' };
 
-  const COLUMN: Column<BaseEntity> = {
+  const COLUMN: Column<unknown> = {
     label: 'Name',
     name: 'name',
-    valueTransform: (row: BaseEntity) => row.name?.toUpperCase(),
+    valueTransform: (row: unknown) => String(get(row, 'name')).toUpperCase(),
   };
 
   it('renders the value correctly', () => {

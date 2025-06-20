@@ -37,7 +37,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const defaultTitle = 'SW - Coda';
-  document.title = to.meta.title || defaultTitle;
+  document.title = to.meta?.title ? String(to.meta.title) : defaultTitle;
   next();
 });
 

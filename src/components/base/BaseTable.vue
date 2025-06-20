@@ -1,8 +1,7 @@
-<script setup lang="ts" generic="T extends BaseEntity">
+<script setup lang="ts" generic="T">
 import { computed, ref, shallowRef, watch } from 'vue';
 import type { Column } from '@/interfaces/InputDefinition.ts';
 import BaseTableCell from '@/components/base/BaseTableCell.vue';
-import type { BaseEntity } from '@/features/BaseEntity.ts';
 import BasePagination from '@/components/base/BasePagination.vue';
 import BaseTableSearch from '@/components/base/BaseTableSearch.vue';
 import { useTable } from '@/shared/table';
@@ -11,6 +10,7 @@ import { useRouteQuery } from '@vueuse/router';
 import type { Order } from '@/types/Order';
 import BaseTableSortButton from '@/components/base/BaseTableSortButton.vue';
 import BaseLoading from '@/components/base/BaseLoading.vue';
+import { get } from 'lodash';
 
 const { paginate, getTotalPages, filter, sortData } = useTable();
 const router = useRouter();
@@ -91,7 +91,7 @@ watch(search, () => (page.value = 1));
         </thead>
         <tbody>
           <div v-if="!paginatedData.length" class="table__no-results">No results found.</div>
-          <tr class="table__line" v-for="row in paginatedData" :key="row.id">
+          <tr class="table__line" v-for="row in paginatedData" :key="get(row, 'id')">
             <BaseTableCell
               v-for="column in props.columns"
               :key="column.name"

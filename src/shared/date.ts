@@ -1,6 +1,6 @@
 export const useDate = () => {
   const format = (date: Date) =>
-    new Intl.DateTimeFormat({
+    new Intl.DateTimeFormat('EN-US', {
       day: '2-digit',
       month: 'long',
       year: 'numeric',

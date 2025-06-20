@@ -1,8 +1,7 @@
-<script setup lang="ts" generic="T extends BaseEntity">
+<script setup lang="ts" generic="T">
 import { computed } from 'vue';
 import type { Column } from '@/interfaces/InputDefinition.ts';
 import { get } from 'lodash';
-import type { BaseEntity } from '@/features/BaseEntity.ts';
 
 const props = defineProps<{ column: Column<T>; row: T }>();
 

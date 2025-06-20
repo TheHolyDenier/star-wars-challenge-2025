@@ -1,4 +1,4 @@
-import { NotificationType } from '@/types/NotificationType';
+import type { NotificationType } from '@/types/NotificationType';
 
 export interface Notification {
   id: number;

@@ -1,5 +1,5 @@
 import { get, orderBy } from 'lodash';
-import { Order } from '@/types/Order';
+import type { Order } from '@/types/Order';
 
 export const useTable = <T>(displayPerPage = 10) => {
   const paginate = (data: T[], page: number): T[] => {

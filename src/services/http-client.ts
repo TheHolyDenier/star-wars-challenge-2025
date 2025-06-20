@@ -1,8 +1,6 @@
-import { useRouter } from 'vue-router';
+import { HttpError } from '@/errors/HttpError';
 
 export async function httpClient<T>(url: string, options?: RequestInit): Promise<T> {
-  const router = useRouter();
-
   try {
     const response = await fetch(url, options);
 
@@ -10,17 +8,8 @@ export async function httpClient<T>(url: string, options?: RequestInit): Promise
       const data = await response.json();
       return data as T;
     }
-    if (response.status >= 400 && response.status < 600) {
-      return router.push({
-        name: 'error',
-        params: {
-          status: response.status.toString(),
-          message: response.statusText || 'Unexpected error',
-        },
-      });
 
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    throw new HttpError(response.status, response.statusText || 'Unexpected error');
   } catch (error) {
     console.error('API fetch error:', error);
 
