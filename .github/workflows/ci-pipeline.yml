@@ -20,7 +20,7 @@ jobs:
         node-version: '20'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run linting
       run: npm run lint
@@ -35,7 +35,7 @@ jobs:
       run: npx wait-on http://localhost:5173
 
     - name: Install Playwright Browsers
-      run: npx playwright install
+      run: npx playwright install --with-deps
 
     - name: Run Playwright tests
       run: npx playwright test
