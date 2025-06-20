@@ -1,45 +1,36 @@
 # star-wars-coda
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+SW coda showcases Star Wars people and planets using Vue 3 with typescript. It allows the user to sort, search and paginate through fetched data. It's built with modular architecture and generic, flexible components, designed with scalability and maintainability in mind.  
 
 ## Project Setup
 
+Requires node 20+. To run the app, execute: 
+
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+The app will run at `http://localhost:5173`. 
 
-```sh
-npm run build
-```
+## Testing
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Unit tests run with Vitest + Vue test utils
 
 ```sh
 npm run test:unit
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+e2e test run with Playwright. Please, make sure the server is running before initializing. 
 
-```sh
-npm run lint
-```
+## Technical decisions
+
+- Vue 3 + Vite, using CAPI with setup in the script tag as recommended by the official Vue docs. 
+- Typescript to improve typing, with class-transformer to use more javascript friendly naming conventions
+- Vue Router 4 for routing management
+- Pinia as state management (only used to manage error notifications)
+- Used lodash and Vue Use to avoid recoding reusable utilities, as those libraries are reliable and consistent
+- Styled with SCSS, applying variables and mixins to make sure the styling was consistent
+- BEM for styling class naming to ensure maintainable and semantic class naming 
+- MVC architecture, with separated views, logic and data handling 
+- 

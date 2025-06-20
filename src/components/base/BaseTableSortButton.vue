@@ -26,12 +26,12 @@ const toggleSort = (column: Column<T>) => {
 
 <template>
   <button
+    :aria-label="`Sorted by ${column.label} in ${order === 'asc' ? 'ascending' : 'descending'} order`"
+    :aria-pressed="sort === column.name ? 'true' : 'false'"
     class="sort-button button--transparent"
+    tabindex="0"
     type="button"
     @click="toggleSort(column)"
-    :aria-pressed="sort === column.name ? 'true' : 'false'"
-    :aria-label="`Sorted by ${column.label} in ${order === 'asc' ? 'ascending' : 'descending'} order`"
-    tabindex="0"
   >
     {{ column.label }}
     <span v-if="sort === column.name">

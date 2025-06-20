@@ -13,10 +13,10 @@ const navigationItems = [
 <template>
   <div class="layout">
     <header class="layout__header">
-      <RouterLink class="layout__link" :to="{ name: 'home' }">
+      <RouterLink :to="{ name: 'home' }" class="layout__link" tabindex="0">
         <h1 class="layout__title" aria-label="Go to main">Star wars coda</h1>
       </RouterLink>
-      <div v-if="route.name !== 'home'" class="layout__nav">
+      <nav v-if="route.name !== 'home'" class="layout__nav">
         <RouterLink
           v-for="item of navigationItems"
           :key="item.url"
@@ -26,7 +26,7 @@ const navigationItems = [
         >
           {{ item.url }}
         </RouterLink>
-      </div>
+      </nav>
     </header>
     <main class="layout__content">
       <slot />

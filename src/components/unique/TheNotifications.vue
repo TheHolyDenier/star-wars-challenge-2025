@@ -11,8 +11,9 @@ const { notifications } = storeToRefs(notificationStore);
     <div
       v-for="notification in notifications"
       :key="notification.id"
-      class="notifications__item"
       :class="`notifications__item--${notification.type}`"
+      class="notifications__item"
+      role="alert"
     >
       {{ notification.message }}
 

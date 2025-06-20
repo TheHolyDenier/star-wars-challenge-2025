@@ -38,9 +38,9 @@ const goBackwards = () => {
       </span>
     </span>
     <button
+      :disabled="page >= totalPages"
       aria-label="Go forward"
       class="pagination__button pagination__button--forwards button--primary"
-      :disabled="page >= totalPages"
       @click="goForward"
     >
       ▶

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="loading">
+  <div class="loading" aria-label="Data is loading">
     <div class="loading__spinner"></div>
   </div>
 </template>
